@@ -5,17 +5,127 @@ from PIL import Image, ImageDraw
 import io
 import math
 import base64
-from lego_colors_round import LEGO_COLORS_ROUND
-from lego_colors import LEGO_COLORS_ALL
-from lego_colors_square import LEGO_COLORS_SQUARE
+import os
 
+# ------------------------------ LEGO COLOR DATA ------------------------------
+# Inline all color data to eliminate import issues
 
-# Set page configuration
-st.set_page_config(
-    page_title="LEGO Mosaic Creator",
-    page_icon="🧱",
-    layout="wide"
-)
+# Round 1x1 plates colors
+LEGO_COLORS_ROUND = [
+    ["Black", "#05131D", 5, 19, 29],
+    ["Blue", "#0055BF", 0, 85, 191],
+    ["Green", "#237841", 35, 120, 65],
+    ["Dark Turquoise", "#008F9B", 0, 143, 155],
+    ["Red", "#C91A09", 201, 26, 9],
+    ["Dark Pink", "#C870A0", 200, 112, 160],
+    ["Brown", "#583927", 88, 57, 39],
+    ["Light Gray", "#9BA19D", 155, 161, 157],
+    ["Dark Gray", "#6D6E5C", 109, 110, 92],
+    ["Bright Green", "#4B9F4A", 75, 159, 74],
+    ["Yellow", "#F2CD37", 242, 205, 55],
+    ["White", "#FFFFFF", 255, 255, 255],
+    ["Tan", "#E4CD9E", 228, 205, 158],
+    ["Orange", "#FE8A18", 254, 138, 24],
+    ["Magenta", "#923978", 146, 57, 120],
+    ["Lime", "#BBE90B", 187, 233, 11],
+    ["Dark Tan", "#958A73", 149, 138, 115],
+    ["Bright Pink", "#E4ADC8", 228, 173, 200],
+    ["Medium Lavender", "#AC78BA", 172, 120, 186],
+    ["Reddish Brown", "#582A12", 88, 42, 18],
+    ["Light Bluish Gray", "#A0A5A9", 160, 165, 169],
+    ["Dark Bluish Gray", "#6C6E68", 108, 110, 104],
+    ["Medium Nougat", "#AA7D55", 170, 125, 85],
+    ["Dark Purple", "#3F3691", 63, 54, 145],
+    ["Nougat", "#D09168", 208, 145, 104],
+    ["Yellowish Green", "#DFEEA5", 223, 238, 165],
+    ["Bright Light Orange", "#F8BB3D", 248, 187, 61],
+    ["Bright Light Yellow", "#FFF03A", 255, 240, 58],
+    ["Dark Blue", "#0A3463", 10, 52, 99],
+    ["Dark Brown", "#352100", 53, 33, 0],
+    ["Dark Red", "#720E0F", 114, 14, 15],
+    ["Medium Azure", "#36AEBF", 54, 174, 191],
+    ["Light Aqua", "#ADC3C0", 173, 195, 192],
+    ["Olive Green", "#9B9A5A", 155, 154, 90],
+    ["Sand Green", "#A0BCAC", 160, 188, 172],
+    ["Sand Blue", "#6074A1", 96, 116, 161],
+    ["Dark Orange", "#A95500", 169, 85, 0],
+]
+
+# Square 1x1 plates colors
+LEGO_COLORS_SQUARE = [
+    ["Black", "#05131D", 5, 19, 29],
+    ["Blue", "#0055BF", 0, 85, 191],
+    ["Green", "#237841", 35, 120, 65],
+    ["Dark Turquoise", "#008F9B", 0, 143, 155],
+    ["Red", "#C91A09", 201, 26, 9],
+    ["Dark Pink", "#C870A0", 200, 112, 160],
+    ["Brown", "#583927", 88, 57, 39],
+    ["Light Gray", "#9BA19D", 155, 161, 157],
+    ["Dark Gray", "#6D6E5C", 109, 110, 92],
+    ["Bright Green", "#4B9F4A", 75, 159, 74],
+    ["Pink", "#FC97AC", 252, 151, 172],
+    ["Yellow", "#F2CD37", 242, 205, 55],
+    ["White", "#FFFFFF", 255, 255, 255],
+    ["Tan", "#E4CD9E", 228, 205, 158],
+    ["Orange", "#FE8A18", 254, 138, 24],
+    ["Magenta", "#923978", 146, 57, 120],
+    ["Lime", "#BBE90B", 187, 233, 11],
+    ["Dark Tan", "#958A73", 149, 138, 115],
+    ["Bright Pink", "#E4ADC8", 228, 173, 200],
+    ["Medium Lavender", "#AC78BA", 172, 120, 186],
+    ["Lavender", "#E1D5ED", 225, 213, 237],
+    ["Reddish Brown", "#582A12", 88, 42, 18],
+    ["Light Bluish Gray", "#A0A5A9", 160, 165, 169],
+    ["Dark Bluish Gray", "#6C6E68", 108, 110, 104],
+    ["Medium Blue", "#5A93DB", 90, 147, 219],
+    ["Light Nougat", "#F6D7B3", 246, 215, 179],
+    ["Medium Nougat", "#AA7D55", 170, 125, 85],
+    ["Dark Purple", "#3F3691", 63, 54, 145],
+    ["Nougat", "#D09168", 208, 145, 104],
+    ["Yellowish Green", "#DFEEA5", 223, 238, 165],
+    ["Bright Light Orange", "#F8BB3D", 248, 187, 61],
+    ["Bright Light Blue", "#9FC3E9", 159, 195, 233],
+    ["Bright Light Yellow", "#FFF03A", 255, 240, 58],
+    ["Dark Blue", "#0A3463", 10, 52, 99],
+    ["Dark Green", "#184632", 24, 70, 50],
+    ["Dark Brown", "#352100", 53, 33, 0],
+    ["Dark Red", "#720E0F", 114, 14, 15],
+    ["Dark Azure", "#078BC9", 7, 139, 201],
+    ["Medium Azure", "#36AEBF", 54, 174, 191],
+    ["Light Aqua", "#ADC3C0", 173, 195, 192],
+    ["Olive Green", "#9B9A5A", 155, 154, 90],
+    ["Sand Green", "#A0BCAC", 160, 188, 172],
+    ["Sand Blue", "#6074A1", 96, 116, 161],
+    ["Medium Orange", "#FFA70B", 255, 167, 11],
+    ["Dark Orange", "#A95500", 169, 85, 0],
+    ["Very Light Gray", "#E6E3DA", 230, 227, 218],
+    ["Coral", "#FF698F", 255, 105, 143],
+    ["Reddish Orange", "#CA4C0B", 202, 76, 11],
+]
+
+# Simplified set of all colors
+LEGO_COLORS_ALL = LEGO_COLORS_SQUARE + [
+    ["Light Blue", "#B4D2E3", 180, 210, 227],
+    ["Light Turquoise", "#55A5AF", 85, 165, 175],
+    ["Salmon", "#F2705E", 242, 112, 94],
+    ["Light Green", "#C2DAB8", 194, 218, 184],
+    ["Light Yellow", "#FBE696", 251, 230, 150],
+    ["Light Violet", "#C9CAE2", 201, 202, 226],
+    ["Purple", "#81007B", 129, 0, 123],
+    ["Dark Blue-Violet", "#2032B0", 32, 50, 176],
+    ["Medium Green", "#73DCA1", 115, 220, 161],
+    ["Light Pink", "#FECCCF", 254, 204, 207],
+    ["Light Brown", "#7C503A", 124, 80, 58],
+    ["Royal Blue", "#4C61DB", 76, 97, 219],
+    ["Light Salmon", "#FEBABD", 254, 186, 189],
+    ["Violet", "#4354A3", 67, 84, 163],
+    ["Medium Bluish Violet", "#6874CA", 104, 116, 202],
+    ["Medium Lime", "#C7D23C", 199, 210, 60],
+    ["Aqua", "#B3D7D1", 179, 215, 209],
+    ["Light Lime", "#D9E4A7", 217, 228, 167],
+    ["Light Orange", "#F9BA61", 249, 186, 97],
+    ["Sky Blue", "#7DBFDD", 125, 191, 221],
+]
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
@@ -25,7 +135,10 @@ BASEPLATE_SIZES = [
     {"name": "64×64", "size": 64}
 ]
 
+# ------------------------------ CORE FUNCTIONS ------------------------------
+
 def find_closest_lego_color(r, g, b, lego_colors):
+    """Find the closest LEGO color to the given RGB values."""
     min_distance = float('inf')
     closest_color = None
     for color in lego_colors:
@@ -37,27 +150,49 @@ def find_closest_lego_color(r, g, b, lego_colors):
     return closest_color
 
 def create_mosaic(image, mosaic_size, lego_colors):
+    """Create a LEGO mosaic from an image."""
     try:
-        img_resized = image.resize((mosaic_size, mosaic_size), Image.Resampling.LANCZOS)
-        if img_resized.mode != 'RGB':
-            img_resized = img_resized.convert('RGB')
+        # Make a copy to avoid modifying the original
+        img_copy = image.copy()
+        
+        # Ensure we're working with RGB mode
+        if img_copy.mode != 'RGB':
+            img_copy = img_copy.convert('RGB')
+            
+        # Try different resize methods if one fails
+        try:
+            img_resized = img_copy.resize((mosaic_size, mosaic_size), Image.Resampling.LANCZOS)
+        except (AttributeError, Exception):
+            try:
+                img_resized = img_copy.resize((mosaic_size, mosaic_size), Image.LANCZOS)
+            except (AttributeError, Exception):
+                img_resized = img_copy.resize((mosaic_size, mosaic_size), Image.NEAREST)
+                
+        # Convert to numpy array for efficient processing
         pixel_data = np.array(img_resized)
+        
+        # Create the mosaic
         mosaic_data = []
         color_counts = {}
+        
+        # Process each row and column
         for y in range(mosaic_size):
             row = []
             for x in range(mosaic_size):
                 r, g, b = pixel_data[y, x]
                 lego_color = find_closest_lego_color(r, g, b, lego_colors)
                 row.append(lego_color)
+                
                 color_name = lego_color[0]
                 color_counts[color_name] = color_counts.get(color_name, 0) + 1
+            
             mosaic_data.append(row)
+            
         return mosaic_data, color_counts
+        
     except Exception as e:
-        st.error(f"Error creating mosaic: {e}")
+        st.error(f"Error creating mosaic: {str(e)}")
         return None, None
-
 
 def draw_mosaic(mosaic_data, pixel_size=20):
     """Draw the mosaic and return as an image."""
@@ -116,8 +251,9 @@ def draw_instructions(mosaic_data, pixel_size=24, color_counts=None, lego_colors
     
     # Create a mapping of colors to numbers
     color_to_number = {}
-    for i, color_name in enumerate(color_counts.keys()):
-        color_to_number[color_name] = i + 1  # Start numbering from 1
+    if color_counts:
+        for i, color_name in enumerate(color_counts.keys()):
+            color_to_number[color_name] = i + 1  # Start numbering from 1
     
     # Draw the mosaic with color numbers
     for y in range(mosaic_size):
@@ -201,6 +337,12 @@ def get_image_download_link(img, filename, text):
     return href
 
 def main():
+    st.set_page_config(
+        page_title="LEGO Mosaic Creator",
+        page_icon="🧱",
+        layout="wide"
+    )
+    
     st.title("🧱 LEGO Mosaic Creator")
     st.write("Transform your images into LEGO mosaic art")
     
@@ -211,37 +353,56 @@ def main():
         st.session_state.demo_mode = False
     if 'mosaic_created' not in st.session_state:
         st.session_state.mosaic_created = False
+    if 'image_processed' not in st.session_state:
+        st.session_state.image_processed = False
     
     col1, col2 = st.columns([3, 1])
     
-    # File uploader - only show when not in demo mode
-    if not st.session_state.demo_mode:
-        uploaded_file = st.file_uploader("Upload an image (square format works best)", type=["jpg", "jpeg", "png"])
-        
-        # Demo mode button
-        if st.button("Or Use Demo Image Instead"):
-            st.session_state.demo_mode = True
-            st.rerun()  # Rerun the app to update the UI
-    else:
-        # Exit demo mode button
-        if st.button("Exit Demo Mode"):
-            st.session_state.demo_mode = False
+    # Check if we should show the 'Start Over' button instead of the uploader
+    if st.session_state.image_processed:
+        if st.button("Start Over with New Image"):
+            st.session_state.image_processed = False
             st.session_state.mosaic_created = False
+            st.session_state.demo_mode = False
             if 'mosaic_data' in st.session_state:
                 del st.session_state.mosaic_data
             if 'color_counts' in st.session_state:
                 del st.session_state.color_counts
-            st.rerun()  # Rerun the app to update the UI
+            if 'current_image' in st.session_state:
+                del st.session_state.current_image
+            st.rerun()
+    
+    # Only show the file uploader if no image is being processed
+    if not st.session_state.image_processed:
+        # File uploader - only show when not in demo mode
+        if not st.session_state.demo_mode:
+            uploaded_file = st.file_uploader("Upload an image (square format works best)", type=["jpg", "jpeg", "png"])
+            
+            # Demo mode button
+            if st.button("Or Use Demo Image Instead"):
+                st.session_state.demo_mode = True
+                st.rerun()  # Rerun the app to update the UI
+        else:
+            # Exit demo mode button
+            if st.button("Exit Demo Mode"):
+                st.session_state.demo_mode = False
+                st.session_state.mosaic_created = False
+                if 'mosaic_data' in st.session_state:
+                    del st.session_state.mosaic_data
+                if 'color_counts' in st.session_state:
+                    del st.session_state.color_counts
+                st.rerun()  # Rerun the app to update the UI
     
     # Variables to store mosaic data
     mosaic_data = None
     color_counts = None
     
     # If an image is uploaded (when not in demo mode)
-    if not st.session_state.demo_mode and 'uploaded_file' in locals() and uploaded_file is not None:
+    if not st.session_state.demo_mode and not st.session_state.image_processed and 'uploaded_file' in locals() and uploaded_file is not None:
         try:
             # Load the image
             image = Image.open(uploaded_file)
+            st.session_state.current_image = image
             
             # Display original image
             with col2:
@@ -287,23 +448,25 @@ def main():
                                 st.session_state.mosaic_data = mosaic_data
                                 st.session_state.color_counts = color_counts
                                 st.session_state.mosaic_created = True
+                                st.session_state.image_processed = True
                                 st.success("Mosaic created successfully!")
+                                st.rerun()  # Force UI update
                         except Exception as e:
                             st.error(f"Error creating mosaic: {str(e)}")
         except Exception as e:
             st.error(f"Error loading image: {str(e)}")
     
     # Demo mode section
-    elif st.session_state.demo_mode:
+    elif st.session_state.demo_mode and not st.session_state.image_processed:
         try:
             # Try to load the demo image file
             demo_path = "demo_image.jpeg"
             try:
                 demo_img = Image.open(demo_path)
-                st.success(f"Successfully loaded demo image from {demo_path}")
+                st.success(f"Successfully loaded demo image")
             except (FileNotFoundError, IOError):
                 # If file not found or can't be opened, create a simple gradient image
-                st.warning(f"Demo image file '{demo_path}' not found or couldn't be opened. Creating a simple gradient image instead.")
+                st.warning(f"Demo image file not found. Creating a simple gradient image instead.")
                 demo_img = Image.new('RGB', (300, 300), color='white')
                 draw = ImageDraw.Draw(demo_img)
                 
@@ -315,6 +478,8 @@ def main():
                         b = int(255 * (1 - (x + y) / 600))
                         draw.point((x, y), fill=(r, g, b))
             
+            st.session_state.current_image = demo_img
+                
             # Display the demo image
             with col2:
                 st.write("Demo Image")
@@ -361,11 +526,19 @@ def main():
                                 st.session_state.mosaic_data = mosaic_data
                                 st.session_state.color_counts = color_counts
                                 st.session_state.mosaic_created = True
+                                st.session_state.image_processed = True
                                 st.success("Demo mosaic created successfully!")
+                                st.rerun()  # Force UI update
                         except Exception as e:
                             st.error(f"Error creating demo mosaic: {str(e)}")
         except Exception as e:
             st.error(f"Error with demo image: {str(e)}")
+    
+    # Handle case when reloading page with processed image
+    if st.session_state.image_processed and 'current_image' in st.session_state:
+        with col2:
+            st.write("Original Image")
+            st.image(st.session_state.current_image, width=150)
     
     # Check if mosaic data exists in session state
     if 'mosaic_data' in st.session_state and st.session_state.mosaic_data is not None:
@@ -410,23 +583,6 @@ def main():
                         get_image_download_link(instructions_img, "lego_instructions.png", "Download Instructions with Color Legend"),
                         unsafe_allow_html=True
                     )
-                
-                # Color legend
-                st.write("### Color Legend:")
-                legend_cols = st.columns(4)
-                lego_colors_used = st.session_state.get("selected_lego_colors", LEGO_COLORS_ALL)
-
-                for i, (color_name, count) in enumerate(color_counts.items()):
-                    color_info = next((c for c in lego_colors_used if c[0] == color_name), None)
-                    if color_info:
-                        with legend_cols[i % 4]:
-                            st.markdown(
-                                f'<div style="display: flex; align-items: center; margin-bottom: 10px;">'
-                                f'<div style="width: 20px; height: 20px; background-color: {color_info[1]}; margin-right: 10px; border: 1px solid black;"></div>'
-                                f'<span>{color_name}</span>'
-                                f'</div>',
-                                unsafe_allow_html=True
-                            )
             
             # Tab 3: Shopping List
             with tab3:
