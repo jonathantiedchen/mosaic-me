@@ -2,14 +2,10 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw
-import io
-import math
-import base64
-import os
 from lego_colors import LEGO_COLORS_ALL
 from lego_colors_round import LEGO_COLORS_ROUND
 from lego_colors_square import LEGO_COLORS_SQUARE
-from utils import find_closest_lego_color, create_mosaic, draw_mosaic, draw_instructions, get_image_download_link
+from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_download_link
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
