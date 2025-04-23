@@ -35,10 +35,6 @@ Try the app with a demo image to see how it works before uploading your own imag
    streamlit run lego_mosaic_creator.py
    ```
 
-### Using GitHub Codespaces
-
-This repository is configured for GitHub Codespaces. Simply open it in Codespaces and the development environment will be automatically set up for you.
-
 ## Project Structure
 
 - `lego_mosaic_creator.py`: Main Streamlit application
@@ -56,24 +52,12 @@ When deploying this application, ensure:
 2. The application has read/write access to handle uploaded images
 3. All dependencies from `requirements.txt` are installed
 
-## Troubleshooting
-
-### Common Issues
-
-- **Random Colors in Mosaic**: If your mosaic shows random colors, check that the color palette files are properly loaded.
-- **Image Processing Errors**: For large images, try resizing them before uploading.
-- **Memory Errors**: Reduce the mosaic size for very large images.
 
 ## Contributing
 
 Contributions are welcome! Feel free to submit a pull request or open an issue.
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
-- Streamlit for the interactive web framework
 - The LEGO® Group for inspiration (LEGO® is a trademark of the LEGO Group)
-- Contributors and testers who helped improve this application
+
