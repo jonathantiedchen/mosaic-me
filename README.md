@@ -3,6 +3,8 @@
 
 Transform your images into LEGO mosaic art with this Streamlit application. Upload any image and convert it into a detailed LEGO mosaic with building instructions and a shopping list.
 
+Live Demo: https://mosaic-me.streamlit.app
+
 ## Features
 
 - **Image Transformation**: Convert any image to a LEGO mosaic
