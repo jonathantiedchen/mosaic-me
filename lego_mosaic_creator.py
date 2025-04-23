@@ -24,16 +24,6 @@ def main():
     
     st.title("🧱 LEGO Mosaic Creator")
     st.write("Transform your images into LEGO mosaic art")
-
-    # Add debug information about loaded color palettes - PUT THIS HERE
-    st.sidebar.write("### Debug Info")
-    st.sidebar.write(f"Round colors loaded: {len(LEGO_COLORS_ROUND)}")
-    st.sidebar.write(f"Square colors loaded: {len(LEGO_COLORS_SQUARE)}")
-    st.sidebar.write(f"All colors loaded: {len(LEGO_COLORS_ALL)}")
-    
-    # Display first few colors to verify content
-    st.sidebar.write("Sample of loaded colors:")
-    st.sidebar.write(LEGO_COLORS_SQUARE[:3])
     
     # Initialize session state variables
     if 'selected_lego_colors' not in st.session_state:
