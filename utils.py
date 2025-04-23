@@ -6,19 +6,39 @@ import math
 import base64
 
 def find_closest_lego_color(r, g, b, lego_colors):
-    """Find the closest LEGO color to the given RGB values."""
+    """Find the closest LEGO color to the given RGB values with error handling."""
+    if lego_colors is None or len(lego_colors) == 0:
+        # Fallback to a default color if no colors are available
+        return ["Black", "#05131D", 5, 19, 29]
+        
+    # Ensure inputs are numeric
+    try:
+        r, g, b = float(r), float(g), float(b)
+    except (ValueError, TypeError):
+        # If conversion fails, use default values
+        r, g, b = 0, 0, 0
+        
     min_distance = float('inf')
-    closest_color = None
+    closest_color = lego_colors[0]  # Default to first color
+    
     for color in lego_colors:
-        name, hex_color, cr, cg, cb = color
-        distance = math.sqrt((r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2)
-        if distance < min_distance:
-            min_distance = distance
-            closest_color = color
+        try:
+            name, hex_color, cr, cg, cb = color
+            # Ensure color values are numeric
+            cr, cg, cb = float(cr), float(cg), float(cb)
+            distance = math.sqrt((r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2)
+            
+            if distance < min_distance:
+                min_distance = distance
+                closest_color = color
+        except (ValueError, TypeError, IndexError):
+            # Skip this color if there's an error
+            continue
+            
     return closest_color
 
 def create_mosaic(image, mosaic_size, lego_colors):
-    """Create a LEGO mosaic from an image."""
+    """Create a LEGO mosaic from an image with robust error handling."""
     try:
         # Make a copy to avoid modifying the original
         img_copy = image.copy()
@@ -39,15 +59,37 @@ def create_mosaic(image, mosaic_size, lego_colors):
         # Convert to numpy array for efficient processing
         pixel_data = np.array(img_resized)
         
+        # Validate lego_colors is properly loaded
+        if lego_colors is None or len(lego_colors) == 0:
+            st.error("LEGO colors not loaded properly")
+            # Use a fallback color palette if needed
+            lego_colors = [
+                ["Black", "#05131D", 5, 19, 29],
+                ["White", "#FFFFFF", 255, 255, 255],
+                ["Red", "#C91A09", 201, 26, 9],
+                ["Blue", "#0055BF", 0, 85, 191],
+                ["Green", "#237841", 35, 120, 65]
+            ]
+            
         # Create the mosaic
         mosaic_data = []
         color_counts = {}
         
-        # Process each row and column
-        for y in range(mosaic_size):
+        # Verify pixel_data dimensions
+        if pixel_data.shape[0] != mosaic_size or pixel_data.shape[1] != mosaic_size:
+            st.warning(f"Resized image dimensions don't match requested size: {pixel_data.shape}")
+            # Resize again or handle the issue
+        
+        # Process each row and column with bounds checking
+        for y in range(min(mosaic_size, pixel_data.shape[0])):
             row = []
-            for x in range(mosaic_size):
-                r, g, b = pixel_data[y, x]
+            for x in range(min(mosaic_size, pixel_data.shape[1])):
+                # Get pixel color with bounds checking
+                try:
+                    r, g, b = pixel_data[y, x]
+                except (IndexError, ValueError):
+                    r, g, b = 0, 0, 0  # Default to black if error
+                    
                 lego_color = find_closest_lego_color(r, g, b, lego_colors)
                 row.append(lego_color)
                 
