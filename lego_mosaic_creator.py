@@ -342,7 +342,7 @@ def main():
     st.divider()
     feedback = st.feedback(
         "thumbs",
-        "Did you enjoy using the LEGO Mosaic Creator? 🎨🧱",
+        prompt="Did you enjoy using the LEGO Mosaic Creator? 🎨🧱",
         key="lego_mosaic_feedback"
     )
 
