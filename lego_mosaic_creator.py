@@ -23,9 +23,9 @@ def main():
     )
     
     st.title("🧱 LEGO Mosaic Creator")
-    st.write("Hello there! With this small application you can transform your images into LEGO mosaic art. " \
-    "Just import an image from your device, chosse the brick type and size, aaaannnd voila."
-     "The app provides you with a pre-view on how the mosaic will look like, gives you a downloadable instruction and shopping list." \
+    st.write("Hello there! With this small application you can transform your images into LEGO mosaic art.\n" \
+    "Just import an image from your device, chosse the brick type and size, aaaannnd voila.\n"
+    "The app provides you with a pre-view on how the mosaic will look like, gives you a downloadable instruction and shopping list.\n" \
     "No data that you enter is saved. Just image in, image out. Awesome, right?! Enjoy the app my friend and happy building! ")
     
     # Initialize session state variables
