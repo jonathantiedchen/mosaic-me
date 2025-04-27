@@ -6,7 +6,6 @@ from lego_colors import LEGO_COLORS_ALL
 from lego_colors_round import LEGO_COLORS_ROUND
 from lego_colors_square import LEGO_COLORS_SQUARE
 from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_download_link, save_feedback_to_google_sheets
-import streamlit as st
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
