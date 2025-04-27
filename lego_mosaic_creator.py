@@ -43,6 +43,9 @@ def main():
     with col2:
         st.image(example2, caption="Example 2", width=800)
     
+    st.write("### Create Your Mosaic here")
+    st.write("#### Please not that the input image has to be in square format!")
+
     # Initialize session state variables
     if 'selected_lego_colors' not in st.session_state:
         st.session_state.selected_lego_colors = LEGO_COLORS_SQUARE
