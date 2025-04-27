@@ -331,13 +331,13 @@ def main():
 
     st.write("### Example Mosaics")
     
-    spacer1, col1, spacer2, col2, spacer3 = st.columns([2, 3, 1, 3, 2])
+    spacer1, col1, spacer2, col2, spacer3 = st.columns([1, 3, 0.5, 3, 1])
     
     with col1:
-        st.image(example1, caption="Example 1", use_column_width=True)
+        st.image(example1, caption="Example 1", use_container_width=True)
 
     with col2:
-        st.image(example2, caption="Example 2", use_column_width=True)
+        st.image(example2, caption="Example 2", use_container_width=True)
 
     st.divider()
     st.write("Did you enjoy using the LEGO Mosaic Creator? 🎨🧱")
