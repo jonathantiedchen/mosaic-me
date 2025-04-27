@@ -1,6 +1,6 @@
 streamlit
-numpy
-pandas
-Pillow
 gspread
 oauth2client
+pandas
+numpy
+Pillow
