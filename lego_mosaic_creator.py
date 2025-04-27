@@ -274,15 +274,10 @@ def main():
                 if instructions_img:
                     st.image(instructions_img)
 
-                    # Prepare for download
-                    buffered_instruction_image = io.BytesIO()
-                    instructions_img.save(buffered_instruction_image, format="PNG")
-                    buffered_instruction_image.seek(0)
-
                     # Download button
                     st.download_button(
                         label="Download Instructions with Color Legend",
-                        data=buffered_instruction_image,
+                        data=instructions_img,
                         file_name="lego_instructions.png",
                         mime="image/png"
                     )
