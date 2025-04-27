@@ -34,9 +34,9 @@ def main():
     example2 = Image.open("example2.png")
 
     st.write("### Example Mosaics")
-
-    col1, col2 = st.columns(2)
-
+    
+    spacer1, col1, spacer2, col2, spacer3 = st.columns([1, 3, 0.5, 3, 1])
+    
     with col1:
         st.image(example1, caption="Example 1", width=700)
 
