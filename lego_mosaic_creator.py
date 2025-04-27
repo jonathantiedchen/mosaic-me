@@ -38,10 +38,10 @@ def main():
     spacer1, col1, spacer2, col2, spacer3 = st.columns([1, 3, 0.5, 3, 1])
     
     with col1:
-        st.image(example1, caption="Example 1", width=700)
+        st.image(example1, caption="Example 1", width=800)
 
     with col2:
-        st.image(example2, caption="Example 2", width=700)
+        st.image(example2, caption="Example 2", width=800)
     
     # Initialize session state variables
     if 'selected_lego_colors' not in st.session_state:
