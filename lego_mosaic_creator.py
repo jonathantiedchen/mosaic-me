@@ -348,7 +348,9 @@ def main():
 
     if feedback:
         try:
-            save_feedback_to_google_sheets(feedback["rating"], feedback.get("text"))
+            rating = "thumbs_up" if feedback == 1 else "thumbs_down"
+            comment = ""  # no text unless you add a text input manually
+            save_feedback_to_google_sheets(rating, comment)            
             st.success("Thank you for your feedback! 🙏 (It has been saved)")
         except Exception as e:
             st.error(f"An error occurred while saving your feedback: {str(e)}")
