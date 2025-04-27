@@ -9,6 +9,9 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
+### secrets
+st.secrets[]
+
 def find_closest_lego_color(r, g, b, lego_colors):
     """Find the closest LEGO color to the given RGB values with error handling."""
     if lego_colors is None or len(lego_colors) == 0:
@@ -254,11 +257,23 @@ def get_image_download_link(img, filename, text):
 
 def save_feedback_to_google_sheets(rating, comment):
     # Path to your service account key JSON file
-    creds_path = "service_account.json"
+    creds_dict = {
+        "type": st.secrets["gcp_service_account"]["type"],
+        "project_id": st.secrets["gcp_service_account"]["project_id"],
+        "private_key_id": st.secrets["gcp_service_account"]["private_key_id"],
+        "private_key": st.secrets["gcp_service_account"]["private_key"],
+        "client_email": st.secrets["gcp_service_account"]["client_email"],
+        "client_id": st.secrets["gcp_service_account"]["client_id"],
+        "auth_uri": st.secrets["gcp_service_account"]["auth_uri"],
+        "token_uri": st.secrets["gcp_service_account"]["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["gcp_service_account"]["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["gcp_service_account"]["client_x509_cert_url"],
+        "universe_domain": st.secrets["gcp_service_account"]["universe_domain"]
+    }
     
     # Connect to Google Sheets
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
     
     # Open the sheet (by name or by URL)
