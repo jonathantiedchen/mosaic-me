@@ -254,7 +254,7 @@ def get_image_download_link(img, filename, text):
 
 def save_feedback_to_google_sheets(rating, comment):
     # Path to your service account key JSON file
-    creds_path = "your-service-account-credentials.json"
+    creds_path = "service_account.json"
     
     # Connect to Google Sheets
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
