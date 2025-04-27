@@ -39,6 +39,9 @@ def main():
     Enjoy the app my friend — and happy building! 🚀
     """)
 
+    st.write("### Create Your Mosaic Here")
+    st.write("Please note that you should upload a square image.")
+
     # Initialize session state variables
     if 'selected_lego_colors' not in st.session_state:
         st.session_state.selected_lego_colors = LEGO_COLORS_SQUARE
