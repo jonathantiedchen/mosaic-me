@@ -340,9 +340,9 @@ def main():
         st.image(example2, caption="Example 2", width=800)
 
     st.divider()
+    st.write("Did you enjoy using the LEGO Mosaic Creator? 🎨🧱")
     feedback = st.feedback(
         "thumbs",
-        prompt="Did you enjoy using the LEGO Mosaic Creator? 🎨🧱",
         key="lego_mosaic_feedback"
     )
 
