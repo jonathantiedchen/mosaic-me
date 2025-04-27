@@ -345,11 +345,16 @@ def main():
         "thumbs",
         key="lego_mosaic_feedback"
     )
+    # Step 2: Optional text comment
+    comment = st.text_area(
+        label="Tell me what you built, or any feedback you have! 🧱🎨",
+        placeholder="I built a mosaic of my dog!",
+        key="lego_mosaic_comment"
+    )
 
     if feedback:
         try:
             rating = "thumbs_up" if feedback == 1 else "thumbs_down"
-            comment = ""  # no text unless you add a text input manually
             save_feedback_to_google_sheets(rating, comment)            
             st.success("Thank you for your feedback! 🙏 (It has been saved)")
         except Exception as e:
