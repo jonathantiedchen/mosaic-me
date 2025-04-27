@@ -5,7 +5,8 @@ from PIL import Image, ImageDraw
 from lego_colors import LEGO_COLORS_ALL
 from lego_colors_round import LEGO_COLORS_ROUND
 from lego_colors_square import LEGO_COLORS_SQUARE
-from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_download_link
+from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_download_link, save_feedback_to_google_sheets
+import streamlit as st
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
@@ -338,5 +339,20 @@ def main():
 
     with col2:
         st.image(example2, caption="Example 2", width=800)
+
+    st.divider()
+    feedback = st.feedback(
+        "Did you enjoy using the LEGO Mosaic Creator? 🎨🧱",
+        optional_text_label="Tell me what you built! 🚀",
+        key="lego_mosaic_feedback"
+    )
+
+    if feedback:
+        try:
+            save_feedback_to_google_sheets(feedback["rating"], feedback.get("text"))
+            st.success("Thank you for your feedback! 🙏 (It has been saved)")
+        except Exception as e:
+            st.error(f"An error occurred while saving your feedback: {str(e)}")
+
 if __name__ == "__main__":
     main()

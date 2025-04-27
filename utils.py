@@ -4,6 +4,10 @@ from PIL import Image, ImageDraw
 import io
 import math
 import base64
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
 
 def find_closest_lego_color(r, g, b, lego_colors):
     """Find the closest LEGO color to the given RGB values with error handling."""
@@ -245,3 +249,25 @@ def get_image_download_link(img, filename, text):
     img_str = base64.b64encode(buffered.getvalue()).decode()
     href = f'<a href="data:image/png;base64,{img_str}" download="{filename}">{text}</a>'
     return href
+
+
+
+def save_feedback_to_google_sheets(rating, comment):
+    # Path to your service account key JSON file
+    creds_path = "your-service-account-credentials.json"
+    
+    # Connect to Google Sheets
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+    client = gspread.authorize(creds)
+    
+    # Open the sheet (by name or by URL)
+    sheet = client.open("lego_feedback").sheet1  # Assuming first sheet
+    
+    # Prepare feedback data
+    timestamp = datetime.now().isoformat()
+    rating = rating if rating else ""
+    comment = comment if comment else ""
+    
+    # Append the feedback as a new row
+    sheet.append_row([timestamp, rating, comment])
