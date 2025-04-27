@@ -144,9 +144,7 @@ def main():
                                 st.session_state.mosaic_data = mosaic_data
                                 st.session_state.color_counts = color_counts
                                 st.session_state.mosaic_created = True
-                                st.session_state.image_processed = True
                                 st.success("Mosaic created successfully!")
-                                st.rerun()  # Force UI update
                         except Exception as e:
                             st.error(f"Error creating mosaic: {str(e)}")
         except Exception as e:
@@ -324,7 +322,10 @@ def main():
                 )
         except Exception as e:
             st.error(f"Error rendering mosaic: {str(e)}")
+    
+    
     #### EXAMPLES
+    st.divider()
     # Display example images side-by-side
     example1 = Image.open("example1.png")  # or .jpg, depending on your file
     example2 = Image.open("example2.png")
@@ -339,13 +340,14 @@ def main():
     with col2:
         st.image(example2, caption="Example 2", use_container_width=True)
 
+
+    ### FEEDBACK
     st.divider()
     st.write("Did you enjoy using the LEGO Mosaic Creator? 🎨🧱")
     feedback = st.feedback(
         "thumbs",
         key="lego_mosaic_feedback"
     )
-    # Step 2: Optional text comment
     comment = st.text_area(
         label="Tell me what you built, or any feedback you have! 🧱🎨",
         placeholder="I built a mosaic of my dog!",
