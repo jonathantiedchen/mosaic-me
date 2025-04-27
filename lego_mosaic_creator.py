@@ -9,10 +9,11 @@ from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_downl
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
-    {"name": "16×16", "size": 16},
     {"name": "32×32", "size": 32},
     {"name": "48×48", "size": 48},
-    {"name": "64×64", "size": 64}
+    {"name": "64×64", "size": 64},
+    {"name": "96×96", "size": 96},
+    {"name": "128×128", "size": 128},
 ]
 
 def main():
