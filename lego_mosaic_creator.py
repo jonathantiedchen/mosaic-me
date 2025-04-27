@@ -39,6 +39,7 @@ def main():
     Enjoy the app my friend — and happy building! 🚀
     """)
     
+    #### EXAMPLES
     # Display example images side-by-side
     example1 = Image.open("example1.png")  # or .jpg, depending on your file
     example2 = Image.open("example2.png")
@@ -338,6 +339,19 @@ def main():
                 )
         except Exception as e:
             st.error(f"Error rendering mosaic: {str(e)}")
+    #### EXAMPLES
+    # Display example images side-by-side
+    example1 = Image.open("example1.png")  # or .jpg, depending on your file
+    example2 = Image.open("example2.png")
 
+    st.write("### Example Mosaics")
+    
+    spacer1, col1, spacer2, col2, spacer3 = st.columns([1, 3, 0.5, 3, 1])
+    
+    with col1:
+        st.image(example1, caption="Example 1", width=800)
+
+    with col2:
+        st.image(example2, caption="Example 2", width=800)
 if __name__ == "__main__":
     main()
