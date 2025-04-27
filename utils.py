@@ -9,9 +9,6 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
-### secrets
-st.secrets[]
-
 def find_closest_lego_color(r, g, b, lego_colors):
     """Find the closest LEGO color to the given RGB values with error handling."""
     if lego_colors is None or len(lego_colors) == 0:
