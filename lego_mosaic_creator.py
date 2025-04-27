@@ -24,10 +24,20 @@ def main():
     )
     
     st.title("🧱 LEGO Mosaic Creator")
-    st.write("Hello there! With this small application you can transform your images into LEGO-style mosaic art.\n" \
-    "Just import an image from your device, choose the brick type and size, aaaannnd voila.\n"
-    "The app provides you with a pre-view on how the mosaic will look like, gives you a downloadable instruction and shopping list.\n" \
-    "No data that you enter is saved. Just image in, image out. Awesome, right?! Enjoy the app my friend and happy building! ")
+    st.write("""
+    Hello there! 👋 With this small application you can transform your images into LEGO-style mosaic art.
+
+    Here’s what the app does for you:
+    - 📷 Import an image from your device (square format works best)
+    - 🧱 Choose the LEGO brick type (round, square, or all colors) and mosaic size
+    - 👀 Get a real-time preview of your mosaic
+    - 🏗️ Download easy-to-follow building instructions
+    - 🛒 Get a shopping list with the exact LEGO pieces you need
+    - 🔒 No data is saved — just image in, image out. 100% privacy!
+
+    Awesome, right?!  
+    Enjoy the app my friend — and happy building! 🚀
+    """)
     
     # Display example images side-by-side
     example1 = Image.open("example1.png")  # or .jpg, depending on your file
