@@ -273,11 +273,18 @@ def main():
                 instructions_img = draw_instructions(mosaic_data, color_counts=color_counts, lego_colors_used=lego_colors_used)
                 if instructions_img:
                     st.image(instructions_img)
-                    
-                    # Download link
-                    st.markdown(
-                        get_image_download_link(instructions_img, "lego_instructions.png", "Download Instructions with Color Legend"),
-                        unsafe_allow_html=True
+
+                    # Prepare for download
+                    buffered_instruction_image = io.BytesIO()
+                    instructions_img.save(buffered_instruction_image, format="PNG")
+                    buffered_instruction_image.seek(0)
+
+                    # Download button
+                    st.download_button(
+                        label="Download Instructions with Color Legend",
+                        data=buffered_instruction_image,
+                        file_name="lego_instructions.png",
+                        mime="image/png"
                     )
             
             # Tab 3: Shopping List
