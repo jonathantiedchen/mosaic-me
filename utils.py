@@ -131,7 +131,7 @@ def draw_mosaic(mosaic_data, pixel_size=20):
             y1 = y * pixel_size
             x2 = x1 + pixel_size - 1
             y2 = y1 + pixel_size - 1
-            draw.rectangle([(x1, y1), (x2, y2)], fill=(r, g, b), outline=(128, 128, 128))
+            draw.rectangle([(x1, y1), (x2, y2)], fill=(r, g, b))
     
     return image
 
