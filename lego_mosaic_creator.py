@@ -38,24 +38,6 @@ def main():
     Awesome, right?!  
     Enjoy the app my friend — and happy building! 🚀
     """)
-    
-    #### EXAMPLES
-    # Display example images side-by-side
-    example1 = Image.open("example1.png")  # or .jpg, depending on your file
-    example2 = Image.open("example2.png")
-
-    st.write("### Example Mosaics")
-    
-    spacer1, col1, spacer2, col2, spacer3 = st.columns([1, 3, 0.5, 3, 1])
-    
-    with col1:
-        st.image(example1, caption="Example 1", width=800)
-
-    with col2:
-        st.image(example2, caption="Example 2", width=800)
-    
-    st.write("### Create Your Mosaic here")
-    st.write("- Please not that the input image has to be in square format!")
 
     # Initialize session state variables
     if 'selected_lego_colors' not in st.session_state:
@@ -125,7 +107,7 @@ def main():
                 st.write("### Mosaic Settings")
                 
                 # Select piece shape
-                shape_options = ["Round 1x1 Plates", "Square 1x1 Plates", "All LEGO Colors"]
+                shape_options = ["Round 1x1 Plates", "Square 1x1 Plates"]
                 shape_index = st.selectbox(
                     "Select Piece Shape:",
                     range(len(shape_options)),
