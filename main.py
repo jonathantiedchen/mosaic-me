@@ -5,12 +5,13 @@ from PIL import Image, ImageDraw
 from lego_colors import LEGO_COLORS_ALL
 from lego_colors_round import LEGO_COLORS_ROUND
 from lego_colors_square import LEGO_COLORS_SQUARE
+from lego_colors_square_available import LEGO_COLORS_SQUARE_AVAILABLE
 from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_download_link, save_feedback_to_google_sheets
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
-    {"name": "32×32", "size": 32},
-    {"name": "48×48", "size": 48},
+    {"name": "32×32 (standard)", "size": 32},
+    {"name": "48×48 (standard)", "size": 48},
     {"name": "64×64", "size": 64},
     {"name": "96×96", "size": 96},
     {"name": "128×128", "size": 128},
@@ -110,7 +111,7 @@ def main():
                 st.write("### Mosaic Settings")
                 
                 # Select piece shape
-                shape_options = ["Round 1x1 Plates", "Square 1x1 Plates"]
+                shape_options = ["Round 1x1 Plates (Bricklink Colors)", "Square 1x1 Plates (Bricklink Colors)",  "Square 1x1 Plates (LEGO Shop Colors)" ]
                 shape_index = st.selectbox(
                     "Select Piece Shape:",
                     range(len(shape_options)),
@@ -121,6 +122,8 @@ def main():
                     selected_lego_colors = LEGO_COLORS_ROUND
                 elif shape_index == 1:
                     selected_lego_colors = LEGO_COLORS_SQUARE
+                elif shape_index == 2: 
+                    selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
                 else:
                     selected_lego_colors = LEGO_COLORS_ALL
                 st.session_state.selected_lego_colors = selected_lego_colors
