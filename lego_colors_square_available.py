@@ -35,5 +35,8 @@ LEGO_COLORS_SQUARE_AVAILABLE = [
     ["Bright Light Yellow", "#FFF03A", 255, 240, 58],
     ["Light Purple", "#CD6298", 205, 98, 152],
     ["Vibrant Coral", "#FF698F", 255, 105, 143],
-    ["Medium Lavender", "#AC78BA", 172, 120, 186]
+    ["Medium Lavender", "#AC78BA", 172, 120, 186],
+    ["Black", "#05131D", 5, 19, 29],
+    ["White", "#FFFFFF", 255, 255, 255],
+
 ]
