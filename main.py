@@ -340,9 +340,6 @@ def main():
                     except Exception as e:
                         st.warning(f"Error logging shopping list download: {str(e)}")
 
-                    except Exception as e:
-                        st.error(f"Error rendering mosaic: {str(e)}")
-    
     
     #### EXAMPLES
     st.divider()
