@@ -6,7 +6,7 @@ from lego_colors import LEGO_COLORS_ALL
 from lego_colors_round import LEGO_COLORS_ROUND
 from lego_colors_square import LEGO_COLORS_SQUARE
 from lego_colors_square_available import LEGO_COLORS_SQUARE_AVAILABLE
-from utils import create_mosaic, draw_mosaic, draw_instructions, get_image_download_link, save_feedback_to_google_sheets
+from utils import *
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
@@ -268,18 +268,27 @@ def main():
             with tab2:
                 st.write("### Building Instructions")
                 st.write("Follow the color-coded grid below to build your mosaic:")
-                
+
                 # Draw instructions with color legend
                 lego_colors_used = st.session_state.get("selected_lego_colors", LEGO_COLORS_ALL)
                 instructions_img = draw_instructions(mosaic_data, color_counts=color_counts, lego_colors_used=lego_colors_used)
+                
                 if instructions_img:
                     st.image(instructions_img)
-                    
-                    # Download link
-                    st.markdown(
-                        get_image_download_link(instructions_img, "lego_instructions.png", "Download Instructions with Color Legend"),
-                        unsafe_allow_html=True
-                    )
+
+                    # Track the instruction download event
+                    if st.download_button(
+                        label="Download Instructions with Color Legend",
+                        data=instructions_img_to_bytes(instructions_img),
+                        file_name="lego_instructions.png",
+                        mime="image/png",
+                    ):
+                        try:
+                            save_instruction_download_to_google_sheets()
+                        except Exception as e:
+                            st.warning(f"Error logging instruction download: {str(e)}")
+
+
             
             # Tab 3: Shopping List
             with tab3:
