@@ -9,6 +9,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 from io import BytesIO
+from sklearn.cluster import KMeans
+
 
 
 def find_closest_lego_color(r, g, b, lego_colors):
@@ -42,70 +44,65 @@ def find_closest_lego_color(r, g, b, lego_colors):
             continue
             
     return closest_color
-
-def create_mosaic(image, mosaic_size, lego_colors):
-    """Create a LEGO mosaic from an image with robust error handling."""
+    
+def create_mosaic(image, mosaic_size, lego_colors, use_kmeans=True, block_size=4):
+    """
+    Create a LEGO mosaic using either averaging or K-Means for downscaling.
+    `block_size` determines how many pixels per block (if using K-Means).
+    """
     try:
-        # Make a copy to avoid modifying the original
         img_copy = image.copy()
-        
-        # Ensure we're working with RGB mode
         if img_copy.mode != 'RGB':
             img_copy = img_copy.convert('RGB')
-            
-        # Try different resize methods if one fails
-        try:
+
+        # Resize image to multiple of mosaic_size × block_size for KMeans
+        if use_kmeans:
+            input_size = mosaic_size * block_size
+            img_resized = img_copy.resize((input_size, input_size), Image.Resampling.LANCZOS)
+            img_np = np.array(img_resized)
+            h, w, _ = img_np.shape
+            mosaic_data = []
+            color_counts = {}
+
+            for y in range(mosaic_size):
+                row = []
+                for x in range(mosaic_size):
+                    block = img_np[y*block_size:(y+1)*block_size, x*block_size:(x+1)*block_size]
+                    flat = block.reshape(-1, 3)
+                    if flat.shape[0] == 0:
+                        rgb = (0, 0, 0)
+                    else:
+                        kmeans = KMeans(n_clusters=1, n_init=10, random_state=42)
+                        kmeans.fit(flat)
+                        rgb = tuple(kmeans.cluster_centers_[0].astype(int))
+
+                    lego_color = find_closest_lego_color(*rgb, lego_colors)
+                    row.append(lego_color)
+                    color_name = lego_color[0]
+                    color_counts[color_name] = color_counts.get(color_name, 0) + 1
+                mosaic_data.append(row)
+
+            return mosaic_data, color_counts
+
+        else:
+            # Fallback to average mode (LANCZOS)
             img_resized = img_copy.resize((mosaic_size, mosaic_size), Image.Resampling.LANCZOS)
-        except (AttributeError, Exception):
-            try:
-                img_resized = img_copy.resize((mosaic_size, mosaic_size), Image.LANCZOS)
-            except (AttributeError, Exception):
-                img_resized = img_copy.resize((mosaic_size, mosaic_size), Image.NEAREST)
-                
-        # Convert to numpy array for efficient processing
-        pixel_data = np.array(img_resized)
-        
-        # Validate lego_colors is properly loaded
-        if lego_colors is None or len(lego_colors) == 0:
-            st.error("LEGO colors not loaded properly")
-            # Use a fallback color palette if needed
-            lego_colors = [
-                ["Black", "#05131D", 5, 19, 29],
-                ["White", "#FFFFFF", 255, 255, 255],
-                ["Red", "#C91A09", 201, 26, 9],
-                ["Blue", "#0055BF", 0, 85, 191],
-                ["Green", "#237841", 35, 120, 65]
-            ]
-            
-        # Create the mosaic
-        mosaic_data = []
-        color_counts = {}
-        
-        # Verify pixel_data dimensions
-        if pixel_data.shape[0] != mosaic_size or pixel_data.shape[1] != mosaic_size:
-            st.warning(f"Resized image dimensions don't match requested size: {pixel_data.shape}")
-            # Resize again or handle the issue
-        
-        # Process each row and column with bounds checking
-        for y in range(min(mosaic_size, pixel_data.shape[0])):
-            row = []
-            for x in range(min(mosaic_size, pixel_data.shape[1])):
-                # Get pixel color with bounds checking
-                try:
+            pixel_data = np.array(img_resized)
+            mosaic_data = []
+            color_counts = {}
+
+            for y in range(mosaic_size):
+                row = []
+                for x in range(mosaic_size):
                     r, g, b = pixel_data[y, x]
-                except (IndexError, ValueError):
-                    r, g, b = 0, 0, 0  # Default to black if error
-                    
-                lego_color = find_closest_lego_color(r, g, b, lego_colors)
-                row.append(lego_color)
-                
-                color_name = lego_color[0]
-                color_counts[color_name] = color_counts.get(color_name, 0) + 1
-            
-            mosaic_data.append(row)
-            
-        return mosaic_data, color_counts
-        
+                    lego_color = find_closest_lego_color(r, g, b, lego_colors)
+                    row.append(lego_color)
+                    color_name = lego_color[0]
+                    color_counts[color_name] = color_counts.get(color_name, 0) + 1
+                mosaic_data.append(row)
+
+            return mosaic_data, color_counts
+
     except Exception as e:
         st.error(f"Error creating mosaic: {str(e)}")
         return None, None
