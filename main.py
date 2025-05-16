@@ -249,20 +249,27 @@ def main():
             tab1, tab2, tab3 = st.tabs(["Mosaic Preview", "Building Instructions", "Shopping List"])
             
             # Tab 1: Mosaic Preview
+            # Tab 1: Mosaic Preview
             with tab1:
                 st.write("### Mosaic Preview")
                 pixel_size = st.slider("Zoom Level:", min_value=5, max_value=20, value=10)
-                
-                # Draw mosaic preview
+
                 mosaic_img = draw_mosaic(mosaic_data, pixel_size)
                 if mosaic_img:
                     st.image(mosaic_img)
-                    
-                    # Download link
-                    st.markdown(
-                        get_image_download_link(mosaic_img, "lego_mosaic.png", "Download Mosaic Image"),
-                        unsafe_allow_html=True
-                    )
+
+                    # Add mosaic download tracking
+                    if st.download_button(
+                        label="Download Mosaic Image",
+                        data=instructions_img_to_bytes(mosaic_img),
+                        file_name="lego_mosaic.png",
+                        mime="image/png",
+                    ):
+                        try:
+                            save_mosaic_download_to_google_sheets()
+                        except Exception as e:
+                            st.warning(f"Error logging mosaic image download: {str(e)}")
+
             
             # Tab 2: Building Instructions
             with tab2:
@@ -288,8 +295,6 @@ def main():
                         except Exception as e:
                             st.warning(f"Error logging instruction download: {str(e)}")
 
-
-            
             # Tab 3: Shopping List
             with tab3:
                 st.write("### Shopping List")
@@ -306,10 +311,9 @@ def main():
                             "Quantity": count,
                             "Color Preview": color_info[1]
                         })
-                
-                # Sort by quantity (descending)
+
                 shopping_df = pd.DataFrame(shopping_data).sort_values(by="Quantity", ascending=False)
-                
+
                 # Display shopping list
                 for i, row in shopping_df.iterrows():
                     st.markdown(
@@ -320,20 +324,24 @@ def main():
                         f'</div>',
                         unsafe_allow_html=True
                     )
-                
-                # Total count
+
                 st.write(f"**Total Pieces:** {sum(color_counts.values())}")
-                
-                # Export shopping list as CSV
+
+                # Export and track CSV download
                 csv = shopping_df[["Color Name", "Quantity"]].to_csv(index=False)
-                st.download_button(
+                if st.download_button(
                     label="Download Shopping List (CSV)",
                     data=csv,
                     file_name="lego_shopping_list.csv",
                     mime="text/csv",
-                )
-        except Exception as e:
-            st.error(f"Error rendering mosaic: {str(e)}")
+                ):
+                    try:
+                        save_shopping_list_download_to_google_sheets()
+                    except Exception as e:
+                        st.warning(f"Error logging shopping list download: {str(e)}")
+
+                    except Exception as e:
+                        st.error(f"Error rendering mosaic: {str(e)}")
     
     
     #### EXAMPLES
