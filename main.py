@@ -41,7 +41,7 @@ def main():
     Enjoy the app my friend — and happy building! 🚀
     """)
 
-    st.write("### Create Your Mosaic Here")
+    st.write("## Create Your Mosaic Here")
     st.write("Please note that you should upload a square image.")
 
     # Initialize session state variables
@@ -186,7 +186,7 @@ def main():
                 st.write("### Demo Mosaic Settings")
                 
                 # Select piece shape
-                shape_options = ["Round 1x1 Plates", "Square 1x1 Plates", "All LEGO Colors"]
+                shape_options = ["Square 1x1 Plates (LEGO Colors)", "Round 1x1 Plates (LEGO Colors)"]
                 shape_index = st.selectbox(
                     "Select Piece Shape:",
                     range(len(shape_options)),
@@ -195,11 +195,12 @@ def main():
                 )
                 
                 if shape_index == 0:
-                    selected_lego_colors = LEGO_COLORS_ROUND
+                    selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
                 elif shape_index == 1:
-                    selected_lego_colors = LEGO_COLORS_SQUARE
+                    selected_lego_colors = LEGO_COLORS_ROUND_AVAILABLE
                 else:
                     selected_lego_colors = LEGO_COLORS_ALL
+
                 st.session_state.selected_lego_colors = selected_lego_colors
                 
                 # Select mosaic size
@@ -253,7 +254,13 @@ def main():
                 st.write("### Mosaic Preview")
                 pixel_size = st.slider("Zoom Level:", min_value=5, max_value=20, value=10)
 
-                mosaic_img = draw_mosaic_with_dots(mosaic_data, pixel_size)
+                if shape_index == 0:
+                    mosaic_img = draw_mosaic(mosaic_data, pixel_size)
+                elif shape_index == 1: 
+                    mosaic_img = draw_mosaic_with_dots(mosaic_data, pixel_size)
+                else: 
+                    mosaic_img = draw_mosaic(mosaic_data, pixel_size)
+
                 if mosaic_img:
                     st.image(mosaic_img)
 
