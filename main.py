@@ -215,7 +215,7 @@ def main():
                 
                 # Generate button for demo
                 if st.button("Generate Demo LEGO Mosaic", key="demo_generate_button"):
-                    with st.spinner("Creating demo mosaic..."):
+                    with st.spinner("Creating demo mosaic...(that might take some seconds)"):
                         try:
                             # Create the mosaic
                             mosaic_data, color_counts = create_mosaic(demo_img, mosaic_size, selected_lego_colors)
