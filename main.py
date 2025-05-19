@@ -244,6 +244,8 @@ def main():
     
     # If mosaic data is available
     if mosaic_data:
+        st.write("### ")
+        st.write("### Results")
         try:
             # Create tabs for different views
             tab1, tab2, tab3 = st.tabs(["Mosaic Preview", "Building Instructions", "Shopping List"])
@@ -251,7 +253,7 @@ def main():
             # Tab 1: Mosaic Preview
             # Tab 1: Mosaic Preview
             with tab1:
-                st.write("### Mosaic Preview")
+                st.write("#### Mosaic Preview")
                 pixel_size = st.slider("Zoom Level:", min_value=5, max_value=20, value=10)
 
                 if shape_index == 0:
@@ -279,7 +281,7 @@ def main():
             
             # Tab 2: Building Instructions
             with tab2:
-                st.write("### Building Instructions")
+                st.write("#### Building Instructions")
                 st.write("Follow the color-coded grid below to build your mosaic:")
 
                 # Draw instructions with color legend
@@ -303,7 +305,7 @@ def main():
 
             # Tab 3: Shopping List
             with tab3:
-                st.write("### Shopping List")
+                st.write("#### Shopping List")
                 st.write("Here are the LEGO 1×1 plates you need to buy:")
                 lego_colors_used = st.session_state.get("selected_lego_colors", LEGO_COLORS_ALL)
 
