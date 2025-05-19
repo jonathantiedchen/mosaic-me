@@ -6,6 +6,7 @@ from lego_colors import LEGO_COLORS_ALL
 from lego_colors_round import LEGO_COLORS_ROUND
 from lego_colors_square import LEGO_COLORS_SQUARE
 from lego_colors_square_available import LEGO_COLORS_SQUARE_AVAILABLE
+from lego_colors_round_available import LEGO_COLORS_ROUND_AVAILABLE
 from utils import *
 
 # Standard baseplate sizes
@@ -111,7 +112,7 @@ def main():
                 st.write("### Mosaic Settings")
                 
                 # Select piece shape
-                shape_options = ["Round 1x1 Plates (Bricklink Colors)", "Square 1x1 Plates (Bricklink Colors)",  "Square 1x1 Plates (LEGO Shop Colors)" ]
+                shape_options = ["Square 1x1 Plates (LEGO Colors)", "Round 1x1 Plates (LEGO Colors)"]
                 shape_index = st.selectbox(
                     "Select Piece Shape:",
                     range(len(shape_options)),
@@ -119,11 +120,9 @@ def main():
                     key="user_shape_selector"
                 )
                 if shape_index == 0:
-                    selected_lego_colors = LEGO_COLORS_ROUND
-                elif shape_index == 1:
-                    selected_lego_colors = LEGO_COLORS_SQUARE
-                elif shape_index == 2: 
                     selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
+                elif shape_index == 1:
+                    selected_lego_colors = LEGO_COLORS_ROUND_AVAILABLE
                 else:
                     selected_lego_colors = LEGO_COLORS_ALL
                 st.session_state.selected_lego_colors = selected_lego_colors
@@ -254,7 +253,7 @@ def main():
                 st.write("### Mosaic Preview")
                 pixel_size = st.slider("Zoom Level:", min_value=5, max_value=20, value=10)
 
-                mosaic_img = draw_mosaic(mosaic_data, pixel_size)
+                mosaic_img = draw_mosaic_with_dots(mosaic_data, pixel_size)
                 if mosaic_img:
                     st.image(mosaic_img)
 

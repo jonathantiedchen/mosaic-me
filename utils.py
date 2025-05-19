@@ -138,6 +138,45 @@ def draw_mosaic(mosaic_data, pixel_size=20):
     
     return image
 
+def draw_mosaic_with_dots(mosaic_data, pixel_size=20):
+    """
+    Draws a mosaic where each cell is a black square filled with a full-sized colored dot (circle).
+    
+    Args:
+        mosaic_data: 2D list of LEGO color tuples.
+        pixel_size: Size of each mosaic block and diameter of each dot.
+    
+    Returns:
+        PIL.Image of the drawn mosaic.
+    """
+    if not mosaic_data:
+        return None
+
+    mosaic_size = len(mosaic_data)
+    img_width = mosaic_size * pixel_size
+    img_height = mosaic_size * pixel_size
+
+    image = Image.new('RGB', (img_width, img_height), color='black')
+    draw = ImageDraw.Draw(image)
+
+    for y in range(mosaic_size):
+        for x in range(mosaic_size):
+            color = mosaic_data[y][x]
+            hex_color = color[1]
+
+            r, g, b = int(hex_color[1:3], 16), int(hex_color[3:5], 16), int(hex_color[5:7], 16)
+
+            # Full-size circle within the square cell
+            x1 = x * pixel_size
+            y1 = y * pixel_size
+            x2 = x1 + pixel_size - 1
+            y2 = y1 + pixel_size - 1
+
+            draw.ellipse([(x1, y1), (x2, y2)], fill=(r, g, b))
+
+    return image
+
+
 def draw_instructions(mosaic_data, pixel_size=24, color_counts=None, lego_colors_used=None):
     """Draw the building instructions and return as an image."""
     if not mosaic_data:
