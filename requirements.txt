@@ -4,3 +4,4 @@ oauth2client
 pandas
 numpy
 Pillow
+scikit-learn
