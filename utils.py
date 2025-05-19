@@ -45,7 +45,7 @@ def find_closest_lego_color(r, g, b, lego_colors):
             
     return closest_color
     
-def create_mosaic(image, mosaic_size, lego_colors, use_kmeans=True, block_size=4):
+def create_mosaic(image, mosaic_size, lego_colors, use_kmeans=False, block_size=4):
     """
     Create a LEGO mosaic using either averaging or K-Means for downscaling.
     `block_size` determines how many pixels per block (if using K-Means).
