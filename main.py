@@ -40,7 +40,7 @@ def main():
     Awesome, right?!  
     Enjoy the app my friend — and happy building! 🚀
     """)
-
+    st.write("## ")
     st.write("## Create Your Mosaic Here")
     st.write("Please note that you should upload a square image.")
 
