@@ -146,6 +146,7 @@ def main():
                                 st.session_state.mosaic_data = mosaic_data
                                 st.session_state.color_counts = color_counts
                                 st.session_state.mosaic_created = True
+                                st.session_state.image_processed = True
                                 st.success("Mosaic created successfully!")
                         except Exception as e:
                             st.error(f"Error creating mosaic: {str(e)}")
