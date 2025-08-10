@@ -125,6 +125,7 @@ def main():
                     key="user_size_selector"
                 )
                 mosaic_size = BASEPLATE_SIZES[size_index]["size"]
+                st.session_state["baseplate_size"] = mosaic_size
                 
                 # Generate button
                 if st.button("Generate LEGO Mosaic", key="user_generate_button"):
@@ -186,6 +187,7 @@ def main():
                     key="demo_size_selector"
                 )
                 mosaic_size = BASEPLATE_SIZES[size_index]["size"]
+                st.session_state["baseplate_size"] = mosaic_size
                 
                 # Generate button for demo
                 if st.button("Generate Demo LEGO Mosaic", key="demo_generate_button"):
