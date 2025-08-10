@@ -9,6 +9,9 @@ from lego_colors_square_available import LEGO_COLORS_SQUARE_AVAILABLE
 from lego_colors_round_available import LEGO_COLORS_ROUND_AVAILABLE
 from utils import *
 
+shape_index = st.session_state.get('shape_index', 0)  # default to 0 (square)
+selected_lego_colors = st.session_state.get('selected_lego_colors', LEGO_COLORS_ALL)
+
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
     {"name": "32×32 (standard)", "size": 32},
@@ -119,6 +122,8 @@ def main():
                     format_func=lambda i: shape_options[i],
                     key="user_shape_selector"
                 )
+                st.session_state['shape_index'] = int(shape_index)
+                
                 if shape_index == 0:
                     selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
                 elif shape_index == 1:
@@ -146,7 +151,6 @@ def main():
                                 st.session_state.mosaic_data = mosaic_data
                                 st.session_state.color_counts = color_counts
                                 st.session_state.mosaic_created = True
-                                st.session_state.image_processed = True
                                 st.success("Mosaic created successfully!")
                         except Exception as e:
                             st.error(f"Error creating mosaic: {str(e)}")
@@ -194,6 +198,7 @@ def main():
                     format_func=lambda i: shape_options[i],
                     key="demo_shape_selector"
                 )
+                st.session_state['shape_index'] = int(shape_index)
                 
                 if shape_index == 0:
                     selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
@@ -251,7 +256,6 @@ def main():
             # Create tabs for different views
             tab1, tab2, tab3 = st.tabs(["Mosaic Preview", "Building Instructions", "Shopping List"])
             
-            # Tab 1: Mosaic Preview
             # Tab 1: Mosaic Preview
             with tab1:
                 st.write("#### Mosaic Preview")
