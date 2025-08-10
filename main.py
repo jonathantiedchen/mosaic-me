@@ -289,7 +289,7 @@ def main():
                             "elementId": color_info[-1]
                         })
 
-                shopping_df = pd.DataFrame(shopping_data).sort_values(by="Quantity", ascending=False)
+                shopping_df = pd.DataFrame(shopping_data).sort_values(by="quantity", ascending=False)
 
                 # Display shopping list
                 for i, row in shopping_df.iterrows():
@@ -297,7 +297,7 @@ def main():
                         f'<div style="display: flex; align-items: center; margin-bottom: 10px;">'
                         f'<div style="width: 20px; height: 20px; background-color: {row["Color Preview"]}; margin-right: 10px; border: 1px solid black;"></div>'
                         f'<span style="width: 150px;">{row["Color Name"]}</span>'
-                        f'<span><b>{row["Quantity"]}</b> pieces</span>'
+                        f'<span><b>{row["quantity"]}</b> pieces</span>'
                         f'</div>',
                         unsafe_allow_html=True
                     )
