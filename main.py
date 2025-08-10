@@ -13,11 +13,11 @@ selected_lego_colors = st.session_state.get('selected_lego_colors', LEGO_COLORS_
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
-    {"name": "32×32 (standard)", "size": 32, "elementId": 11026},
+    {"name": "32×32 (standard)", "size": 32, "elementId": 6061048},
     {"name": "48×48 (standard)", "size": 48, "elementId": 11024},
-    {"name": "64×64", "size": 64, "elementId": 11026},
+    {"name": "64×64", "size": 64, "elementId": 6061048},
     {"name": "96×96", "size": 96, "elementId": 11024},
-    {"name": "128×128", "size": 128, "elementId": 11026},
+    {"name": "128×128", "size": 128, "elementId": 6061048},
 ]
 
 def main():
