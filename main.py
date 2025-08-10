@@ -13,11 +13,11 @@ selected_lego_colors = st.session_state.get('selected_lego_colors', LEGO_COLORS_
 
 # Standard baseplate sizes
 BASEPLATE_SIZES = [
-    {"name": "32×32 (standard)", "size": 32},
-    {"name": "48×48 (standard)", "size": 48},
-    {"name": "64×64", "size": 64},
-    {"name": "96×96", "size": 96},
-    {"name": "128×128", "size": 128},
+    {"name": "32×32 (standard)", "size": 32, "elementId": 11026},
+    {"name": "48×48 (standard)", "size": 48, "elementId": 11024},
+    {"name": "64×64", "size": 64, "elementId": 11026},
+    {"name": "96×96", "size": 96, "elementId": 11024},
+    {"name": "128×128", "size": 128, "elementId": 11026},
 ]
 
 def main():
@@ -288,6 +288,18 @@ def main():
                             "Color Preview": color_info[1],
                             "elementId": color_info[-1]
                         })
+
+                # Add baseplate depending on chosen size
+                chosen_size = st.session_state.get("baseplate_size")  # or however you store the chosen size
+                quantity_map = {32: 1, 48: 1, 64: 4, 96: 4, 128: 16}
+                baseplate_info = next((b for b in BASEPLATE_SIZES if b["size"] == chosen_size), None)
+                if baseplate_info:
+                    shopping_data.insert(0, {  # insert at top of list
+                        "Color Name": f"Baseplate {baseplate_info['name']}",
+                        "quantity": quantity_map.get(chosen_size, 1),
+                        "Color Preview": "#DDDDDD",  # neutral gray placeholder
+                        "elementId": baseplate_info["elementId"]
+                    })
 
                 shopping_df = pd.DataFrame(shopping_data).sort_values(by="quantity", ascending=False)
 
