@@ -284,8 +284,9 @@ def main():
                     if color_info:
                         shopping_data.append({
                             "Color Name": color_name,
-                            "Quantity": count,
-                            "Color Preview": color_info[1]
+                            "quantity": count,
+                            "Color Preview": color_info[1],
+                            "elementId": color_info[-1]
                         })
 
                 shopping_df = pd.DataFrame(shopping_data).sort_values(by="Quantity", ascending=False)
@@ -303,8 +304,14 @@ def main():
 
                 st.write(f"**Total Pieces:** {sum(color_counts.values())}")
 
+                st.markdown(
+                "Download the shopping list by clicking the button below.<br><br>"
+                "You can upload the shoppinglist directly to Lego Pick A Brick to automate the purchasing process.<br><br>"
+                'You can do that by following the link: <a href="https://www.lego.com/en-us/pick-and-build/pick-a-brick">LEGO Pick A Brick</a>',
+                unsafe_allow_html=True
+)
                 # Export and track CSV download
-                csv = shopping_df[["Color Name", "Quantity"]].to_csv(index=False)
+                csv = shopping_df[["elementId", "quantity"]].to_csv(index=False)
                 if st.download_button(
                     label="Download Shopping List (CSV)",
                     data=csv,
