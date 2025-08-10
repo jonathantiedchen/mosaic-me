@@ -9,7 +9,6 @@ from lego_colors_square_available import LEGO_COLORS_SQUARE_AVAILABLE
 from lego_colors_round_available import LEGO_COLORS_ROUND_AVAILABLE
 from utils import *
 
-shape_index = st.session_state.get('shape_index', 0)  # default to 0 (square)
 selected_lego_colors = st.session_state.get('selected_lego_colors', LEGO_COLORS_ALL)
 
 # Standard baseplate sizes
@@ -113,25 +112,10 @@ def main():
             # Mosaic settings
             with col1:
                 st.write("### Mosaic Settings")
-                
-                # Select piece shape
-                shape_options = ["Square 1x1 Plates (LEGO Colors)", "Round 1x1 Plates (LEGO Colors)"]
-                shape_index = st.selectbox(
-                    "Select Piece Shape:",
-                    range(len(shape_options)),
-                    format_func=lambda i: shape_options[i],
-                    key="user_shape_selector"
-                )
-                st.session_state['shape_index'] = int(shape_index)
-                
-                if shape_index == 0:
-                    selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
-                elif shape_index == 1:
-                    selected_lego_colors = LEGO_COLORS_ROUND_AVAILABLE
-                else:
-                    selected_lego_colors = LEGO_COLORS_ALL
-                st.session_state.selected_lego_colors = selected_lego_colors
 
+                selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
+                st.session_state.selected_lego_colors = selected_lego_colors
+                
                 # Select mosaic size
                 size_options = [s["name"] + f" ({s['size']}×{s['size']} studs)" for s in BASEPLATE_SIZES]
                 size_index = st.selectbox(
@@ -190,25 +174,9 @@ def main():
             with col1:
                 st.write("### Demo Mosaic Settings")
                 
-                # Select piece shape
-                shape_options = ["Square 1x1 Plates (LEGO Colors)", "Round 1x1 Plates (LEGO Colors)"]
-                shape_index = st.selectbox(
-                    "Select Piece Shape:",
-                    range(len(shape_options)),
-                    format_func=lambda i: shape_options[i],
-                    key="demo_shape_selector"
-                )
-                st.session_state['shape_index'] = int(shape_index)
-                
-                if shape_index == 0:
-                    selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
-                elif shape_index == 1:
-                    selected_lego_colors = LEGO_COLORS_ROUND_AVAILABLE
-                else:
-                    selected_lego_colors = LEGO_COLORS_ALL
-
+                selected_lego_colors = LEGO_COLORS_SQUARE_AVAILABLE
                 st.session_state.selected_lego_colors = selected_lego_colors
-                
+                                
                 # Select mosaic size
                 size_options = [s["name"] + f" ({s['size']}×{s['size']} studs)" for s in BASEPLATE_SIZES]
                 size_index = st.selectbox(
@@ -261,13 +229,8 @@ def main():
                 st.write("#### Mosaic Preview")
                 pixel_size = st.slider("Zoom Level:", min_value=5, max_value=20, value=10)
 
-                if shape_index == 0:
-                    mosaic_img = draw_mosaic(mosaic_data, pixel_size)
-                elif shape_index == 1: 
-                    mosaic_img = draw_mosaic_with_dots(mosaic_data, pixel_size)
-                else: 
-                    mosaic_img = draw_mosaic(mosaic_data, pixel_size)
-
+                mosaic_img = draw_mosaic(mosaic_data, pixel_size)
+                
                 if mosaic_img:
                     st.image(mosaic_img)
 
