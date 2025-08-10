@@ -31,7 +31,7 @@ def find_closest_lego_color(r, g, b, lego_colors):
     
     for color in lego_colors:
         try:
-            name, hex_color, cr, cg, cb = color
+            name, hex_color, cr, cg, cb = color[:5]
             # Ensure color values are numeric
             cr, cg, cb = float(cr), float(cg), float(cb)
             distance = math.sqrt((r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2)
