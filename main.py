@@ -31,7 +31,7 @@ def main():
     st.write("""
     Hello there! 👋 With this small application you can transform your images into LEGO-style mosaic art.
 
-    Here’s how it works:
+    ### Here’s how it works:
     1. 📷 Import an image from your device (square format works best)
     2. 📐 Choose the dimensions that you want to build in. NOTE: dimensions bigger than 48x48 need to be build by combining smaller plates.
     3. 👀 Generate the mosaic by pressing the button and get a real-time preview of your mosaic.
