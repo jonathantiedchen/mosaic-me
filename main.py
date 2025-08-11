@@ -31,13 +31,15 @@ def main():
     st.write("""
     Hello there! 👋 With this small application you can transform your images into LEGO-style mosaic art.
 
-    Here’s what the app does for you:
-    - 📷 Import an image from your device (square format works best)
-    - 🧱 Choose the LEGO brick type (round, square, or all colors) and mosaic size
-    - 👀 Get a real-time preview of your mosaic
-    - 🏗️ Download easy-to-follow building instructions
-    - 🛒 Get a shopping list with the exact LEGO pieces you need
-    - 🔒 No data is saved — just image in, image out. 100% privacy!
+    Here’s how it works:
+    1. 📷 Import an image from your device (square format works best)
+    2. 📐 Choose the dimensions that you want to build in. NOTE: dimensions bigger than 48x48 need to be build by combining smaller plates.
+    3. 👀 Generate the mosaic by pressing the button and get a real-time preview of your mosaic.
+    4. 🏗️ Download easy-to-follow building instructions
+    5. 🛒 Get a shopping list with the exact LEGO pieces you need and directly upload them to Pick A Brick to add the items to the shopping cart.
+    
+    
+    ALSO: 🔒 No data on the image that generate is saved — just image in, image out. 100% privacy!
 
     Awesome, right?!  
     Enjoy the app my friend — and happy building! 🚀
