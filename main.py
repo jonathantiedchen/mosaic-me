@@ -28,6 +28,18 @@ def main():
     )
     
     st.title("🧱 LEGO Mosaic Creator")
+
+    # Disclaimer about new website
+    st.info("""
+    ✨ **New and Improved Version Available!** ✨
+
+    Check out our new website with enhanced features and better performance:
+
+    **[https://mosaic-me.up.railway.app](https://mosaic-me.up.railway.app)**
+
+    This Streamlit app will continue to work, but we recommend trying the new version for the best experience!
+    """)
+
     st.write("""
     Hello there! 👋 With this small application you can transform your images into LEGO-style mosaic art.
 
