@@ -31,11 +31,11 @@ def main():
 
     # Disclaimer about new website
     st.info("""
-    ✨ **New and Improved Version Available!** ✨
+    ✨ **Switch to new version below!** ✨
 
-    Check out our new website with enhanced features and better performance:
+    Please use the new website with enhanced features and better performance:
 
-    **[https://mosaic-me.up.railway.app](https://mosaic-me.up.railway.app)**
+    **[https://mosaic-me.vercel.app](https://mosaic-me.vercel.app)**
 
     This Streamlit app will continue to work, but we recommend trying the new version for the best experience!
     """)
